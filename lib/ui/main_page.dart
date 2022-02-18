@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/common/style.dart';
 import 'package:restaurant_app/helper/notification_helper.dart';
 import 'package:restaurant_app/ui/detail_page.dart';
 import 'package:restaurant_app/ui/favorite_page.dart';
@@ -23,9 +24,8 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: _listWidget[_bottomIndex],
       bottomNavigationBar: BottomNavigationBar(
-        selectedIconTheme: const IconThemeData(color: Colors.blue),
-        selectedItemColor: Colors.blue,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        selectedIconTheme: IconThemeData(color: mainColor),
+        selectedItemColor: mainColor,
         currentIndex: _bottomIndex,
         items: _bottomNavBarItem,
         onTap: _onBottomNavTapped,

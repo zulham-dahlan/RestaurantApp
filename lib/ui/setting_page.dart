@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/common/style.dart';
 import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/provider/scheduling_notification_provider.dart';
 import 'package:restaurant_app/widgets/platform_widget.dart';
@@ -15,55 +16,42 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  Widget _buildContent() {
-    return Consumer<PreferencesProvider>(builder: (context, provider, child) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Scheduling Notification Restaurant'),
-            Consumer<SchedulingNotificationProvider>(
-              builder: (context, schedule, child) {
-                return Switch.adaptive(
-                  value: provider.isDailyNotificationActive,
-                  onChanged: (value) async {
-                    setState(() {
-                      provider.activateDailyNotification(value);
-                      schedule.scheduledNotification(value);
-                    });
-                  },
-                  activeColor: Colors.black,
-                  activeTrackColor: Colors.blue,
-                );
-              },
-            ),
-          ],
-        ),
-      );
-    });
-  }
-
-  Widget _buildAndroid(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
-      body: _buildContent(),
-    );
-  }
-
-  Widget _buildIos(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text('Settings'),
-        transitionBetweenRoutes: false,
-      ),
-      child: _buildContent(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return PlatformWidget(androidBuilder: _buildAndroid, iosBuilder: _buildIos);
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: mainColor),
+        centerTitle: true,
+        title: Icon(Icons.local_restaurant),
+      ),
+      body: Consumer<PreferencesProvider>(builder: (context, provider, child) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Scheduling Notification Restaurant'),
+              Consumer<SchedulingNotificationProvider>(
+                builder: (context, schedule, child) {
+                  return Switch.adaptive(
+                    value: provider.isDailyNotificationActive,
+                    onChanged: (value) async {
+                      setState(() {
+                        provider.activateDailyNotification(value);
+                        schedule.scheduledNotification(value);
+                      });
+                    },
+                    activeColor: Colors.black,
+                    activeTrackColor: mainColor,
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      }),
+    );
   }
 }
