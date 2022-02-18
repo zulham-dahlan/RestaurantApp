@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/common/style.dart';
 import 'package:restaurant_app/helper/state_helper.dart';
 import 'package:restaurant_app/provider/search_provider.dart';
 import 'package:restaurant_app/widgets/restaurant_item.dart';
@@ -16,26 +17,29 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _buildContent(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.0),
       child: Consumer<SearchProvider>(
         builder: (context, value, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: _queryController,
-                onSubmitted: (String input) async {
-                  setState(() {
-                    value.searchRestaurant(input);
-                  });
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Nama Restaurant',
+              Padding(
+                padding: EdgeInsets.only(right: 20, left: 20, top: 20),
+                child: TextField(
+                  controller: _queryController,
+                  onSubmitted: (String input) async {
+                    setState(() {
+                      value.searchRestaurant(input);
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Nama Restaurant',
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text('Search Result', style: TextStyle(color: mainColor, fontWeight: FontWeight.bold, fontSize: 20),)
               ),
               Expanded(
                 child: _buildList(context, value),
@@ -72,8 +76,13 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: Text('Cari Restaurant'),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: mainColor),
+        centerTitle: true,
+        title: Icon(Icons.local_restaurant),
       ),
       body: _buildContent(context),
     );
