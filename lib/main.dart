@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: SplashScreenPage.reouteName,
+        initialRoute: SplashScreen.reouteName,
         navigatorKey: navigatorKey,
         routes: {
           RestaurantListPage.routeName: (context) => RestaurantListPage(),
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
                 restaurant:
                     ModalRoute.of(context)?.settings.arguments as Restaurant,
               ),
-          SplashScreenPage.reouteName: (context) => SplashScreenPage(),
+          SplashScreen.reouteName: (context) => SplashScreen(),
           SearchPage.routeName: (context) => SearchPage(),
           MainPage.routeName: (context) => MainPage(),
           SettingPage.routeName: (context) => SettingPage(),
