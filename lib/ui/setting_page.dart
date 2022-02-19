@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_app/common/style.dart';
 import 'package:restaurant_app/provider/preferences_provider.dart';
 import 'package:restaurant_app/provider/scheduling_notification_provider.dart';
-import 'package:restaurant_app/widgets/platform_widget.dart';
+
 
 class SettingPage extends StatefulWidget {
   static const routeName = '/setting_page';

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/common/style.dart';
 import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/response_detail.dart';
 import 'package:restaurant_app/data/model/response_restaurant.dart';
 import 'package:restaurant_app/provider/database_provider.dart';
+import 'package:restaurant_app/widgets/foods_menu.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   static const routName = '/restaurant_detail';
@@ -39,185 +41,141 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           if (snapshot.hasData) {
             var restaurant = snapshot.data?.restaurant;
             return SingleChildScrollView(
+                child: Container(
+              padding: EdgeInsets.all(20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(
-                    tag: restaurant!.pictureId,
-                    child: Image.network(pictureUrl + restaurant.pictureId),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(pictureUrl + restaurant!.pictureId),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  restaurant.name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Text('Kategori : '),
-                                    SizedBox(
-                                      height: 15,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: restaurant.categories.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Text(
-                                              '${restaurant.categories[index].name}, ');
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            restaurant.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
                             ),
-                            _buttonFavorite(context, widget.restaurant),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.star_rate_outlined),
-                            Text(restaurant.rating.toString()),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(Icons.location_on),
-                            Text(restaurant.address + ', ' + restaurant.city),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(restaurant.description),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Restaurant Menu',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10.0),
-                              width: 150.0,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Column(
-                                children: [
-                                  Text('Foods'),
-                                  ListView.builder(
-                                      itemCount: restaurant.menus.foods.length,
-                                      shrinkWrap: true,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Text(
-                                            '- ${restaurant.menus.foods[index].name}');
-                                      })
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(10.0),
-                              width: 150.0,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Column(
-                                children: [
-                                  Text('Drinks'),
-                                  ListView.builder(
-                                      itemCount: restaurant.menus.drinks.length,
-                                      shrinkWrap: true,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Text(
-                                            '- ${restaurant.menus.drinks[index].name}');
-                                      })
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Review Restaurant',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: restaurant.customerReviews.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            CustomerReview customerReview =
-                                restaurant.customerReviews[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(customerReview.name),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(' . ${customerReview.date}',
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                        )),
-                                  ],
-                                ),
-                                Text(customerReview.review),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
+                          Text(
+                            restaurant.address + ", " + restaurant.city,
+                          )
+                        ],
+                      ),
+                      _buttonFavorite(context, widget.restaurant),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    restaurant.description,
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Kategori',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: darkColor,
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children:
+                        List.generate(restaurant.categories.length, (index) {
+                      return Container(
+                        padding: EdgeInsets.only(
+                            left: 15, top: 5, right: 15, bottom: 5),
+                        margin: EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: mainColor,
+                        ),
+                        child: Text(restaurant.categories[index].name),
+                      );
+                    }),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Restaurant Menu',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: darkColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FoodsMenu(foodCategory: restaurant.menus.foods,categoryMenu: 'Foods'),
+                   const SizedBox(
+                    height: 10,
+                  ),
+                  FoodsMenu(foodCategory: restaurant.menus.drinks,categoryMenu: 'Drinks',),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'Review Restaurant',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: darkColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: restaurant.customerReviews.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     CustomerReview customerReview =
+                  //         restaurant.customerReviews[index];
+                  //     return Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Row(
+                  //           children: [
+                  //             Text(customerReview.name),
+                  //             const SizedBox(
+                  //               width: 5,
+                  //             ),
+                  //             Text(' . ${customerReview.date}',
+                  //                 style: TextStyle(
+                  //                   fontSize: 10,
+                  //                 )),
+                  //           ],
+                  //         ),
+                  //         Text(customerReview.review),
+                  //         const SizedBox(
+                  //           height: 5,
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
-            );
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text('Check Your Internet Connection'));
           } else {
@@ -237,11 +195,19 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             if (statusFavorite)
               return IconButton(
                   onPressed: () => provider.addToFavorite(restaurant),
-                  icon: Icon(Icons.favorite_border));
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: mainColor,
+                    size: 30,
+                  ));
             else
               return IconButton(
                   onPressed: () => provider.deleteFromFavorite(restaurant.id),
-                  icon: Icon(Icons.favorite));
+                  icon: Icon(
+                    Icons.favorite,
+                    color: mainColor,
+                    size: 30,
+                  ));
           });
     });
   }
@@ -249,8 +215,13 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: Text('Restaurant App'),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: mainColor),
+        centerTitle: true,
+        title: Icon(Icons.local_restaurant),
       ),
       body: _buildContent(context),
     );
