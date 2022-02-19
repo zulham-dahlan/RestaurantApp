@@ -5,6 +5,7 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/data/model/response_detail.dart';
 import 'package:restaurant_app/data/model/response_restaurant.dart';
 import 'package:restaurant_app/provider/database_provider.dart';
+import 'package:restaurant_app/widgets/card_review.dart';
 import 'package:restaurant_app/widgets/foods_menu.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
@@ -144,35 +145,15 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemCount: restaurant.customerReviews.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     CustomerReview customerReview =
-                  //         restaurant.customerReviews[index];
-                  //     return Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             Text(customerReview.name),
-                  //             const SizedBox(
-                  //               width: 5,
-                  //             ),
-                  //             Text(' . ${customerReview.date}',
-                  //                 style: TextStyle(
-                  //                   fontSize: 10,
-                  //                 )),
-                  //           ],
-                  //         ),
-                  //         Text(customerReview.review),
-                  //         const SizedBox(
-                  //           height: 5,
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: restaurant.customerReviews.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      CustomerReview currentReview =
+                          restaurant.customerReviews[index];
+                      return CardReview(customerReview: currentReview,);
+                    },
+                  ),
                 ],
               ),
             ));
